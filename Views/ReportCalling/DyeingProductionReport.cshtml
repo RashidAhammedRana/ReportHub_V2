@@ -2,8 +2,9 @@
 @model DevExpress.XtraReports.UI.XtraReport
 
 @{
-    ViewData["Title"] = "Dyeing Production Report";
+    ViewData["Title"] = "Document Viewer";
 }
+
 <!-- DevExpress Report Viewer CSS -->
 <link rel="stylesheet" href="~/css/viewer.part.bundle.css" />
 <script src="~/js/viewer.part.bundle.js"></script>
@@ -14,4 +15,3 @@
         @Html.DevExpress().WebDocumentViewer("DocumentViewer").Height("1000px").Bind(Model)
     </div>
 </div>
-

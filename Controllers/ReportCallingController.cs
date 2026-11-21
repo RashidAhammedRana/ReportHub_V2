@@ -89,4 +89,29 @@ public class ReportCallingController : Controller
             return Content(ex.InnerException?.Message ?? ex.Message);
         }
     }
+
+    [HttpGet]
+    public async Task<IActionResult> DyeingKpiReport(int menuId, string reportName = "rptDyeingKPI")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
 }
