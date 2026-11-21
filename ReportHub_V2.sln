@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37216.2 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportHub_V2", "ReportHub_V2.csproj", "{01EBA120-3CF5-4B8C-8406-4368DC1DE470}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{01EBA120-3CF5-4B8C-8406-4368DC1DE470}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01EBA120-3CF5-4B8C-8406-4368DC1DE470}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01EBA120-3CF5-4B8C-8406-4368DC1DE470}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01EBA120-3CF5-4B8C-8406-4368DC1DE470}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {93C176F3-5AE5-4876-A4EC-0A0B00FF6F62}
+	EndGlobalSection
+EndGlobal

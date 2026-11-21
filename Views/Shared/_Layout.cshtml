@@ -1,0 +1,223 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewBag.Title</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet" />
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+          rel="stylesheet" />
+
+    <!-- DevExpress Theme CSS -->
+    <link href="https://cdn3.devexpress.com/jslib/23.2.6/css/dx.light.css"
+          rel="stylesheet" />
+
+
+    <!-- DevExpress Viewer CSS -->
+    <link href="~/css/viewer.part.bundle.css"
+          rel="stylesheet"
+          asp-append-version="true" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            width: 100%;
+        }
+
+        body {
+            background: #f4f6f9;
+            overflow-x: hidden;
+        }
+
+        /* SIDEBAR */
+        .sidebar-wrapper {
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* RESPONSIVE */
+        @@media(max-width: 768px) {
+            .sidebar-wrapper {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 12px;
+            }
+        }
+
+        /* GLOBAL LOADING OVERLAY */
+        #globalLoader {
+            display: none;
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.65);
+            z-index: 999999;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .loader-spinner {
+            width: 45px;
+            height: 45px;
+            border: 5px solid #ddd;
+            border-top: 5px solid #0d6efd;
+            border-radius: 50%;
+            animation: loaderSpin 0.8s linear infinite;
+        }
+
+        .loader-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        @@keyframes loaderSpin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+    <!-- JQUERY -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- DEVEXPRESS THIRD PARTY -->
+    <script src="~/js/thirdparty.bundle.js"
+            asp-append-version="true"></script>
+
+</head>
+
+<body>
+
+    <!-- GLOBAL LOADING OVERLAY -->
+    <div id="globalLoader">
+        <div class="loader-spinner"></div>
+        <div class="loader-text">Generating Report... Please Wait</div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar-wrapper">
+        @await Component.InvokeAsync("Sidebar")
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        @RenderBody()
+    </div>
+
+    <!-- BOOTSTRAP JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- DEVEXPRESS VIEWER JS -->
+    <script src="~/js/viewer.part.bundle.js"
+            asp-append-version="true"></script>
+
+    <!-- GLOBAL LOADING SCRIPT -->
+    <script>
+        $(function () {
+
+            let navigationStarted = false;
+
+            // AJAX START
+            $(document).ajaxStart(function () {
+                $("#globalLoader").css("display", "flex");
+            });
+
+            // AJAX COMPLETE
+            $(document).ajaxStop(function () {
+                $("#globalLoader").hide();
+            });
+
+            // NORMAL PAGE NAVIGATION
+            $(document).on("click", "a", function (e) {
+
+                if (e.ctrlKey || e.shiftKey ||
+                    e.metaKey || e.which === 2) {
+                    return;
+                }
+
+                if ($(this).attr("target") === "_blank") {
+                    return;
+                }
+
+                if ($(this).attr("download") !== undefined) {
+                    return;
+                }
+
+                const href = $(this).attr("href");
+
+                if (!href || href === "#" ||
+                    href.startsWith("javascript:") ||
+                    href.startsWith("mailto:") ||
+                    href.startsWith("tel:")) {
+                    return;
+                }
+
+                if ($(this).attr("data-bs-toggle")) {
+                    return;
+                }
+
+                navigationStarted = true;
+
+                $("#globalLoader").css("display", "flex");
+            });
+
+            // FORM SUBMIT
+            $(document).on("submit", "form", function () {
+
+                if (this.target === "_blank") {
+                    return;
+                }
+
+                $("#globalLoader").css("display", "flex");
+            });
+
+            // HIDE LOADER WHEN PAGE IS RESTORED FROM BFCACHE
+            window.addEventListener("pageshow", function () {
+                navigationStarted = false;
+                $("#globalLoader").hide();
+            });
+
+        });
+    </script>
+
+    <!-- PAGE SCRIPTS -->
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

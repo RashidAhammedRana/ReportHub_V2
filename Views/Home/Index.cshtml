@@ -1,0 +1,1078 @@
+﻿@{
+    ViewData["Title"] = "Report Hub";
+
+    var userName = User.Identity?.Name ?? "Guest";
+    var hour = DateTime.Now.Hour;
+
+    var greeting = hour < 12
+        ? "Good Morning"
+        : hour < 18
+            ? "Good Afternoon"
+            : "Good Evening";
+}
+
+<style>
+
+    /* =====================================
+       GLOBAL
+    ===================================== */
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 100%;
+    }
+
+    body {
+        background: #f3f6fa;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: #24364b;
+        overflow-x: hidden;
+    }
+
+    a {
+        text-decoration: none !important;
+    }
+
+    /* =====================================
+       MAIN WRAPPER
+    ===================================== */
+
+    .report-dashboard {
+        width: 100%;
+        max-width: 100%;
+        padding: 10px 14px 25px;
+        margin: 0 auto;
+    }
+
+    /* =====================================
+       HEADER
+    ===================================== */
+
+    .rd-header {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(115deg, #102c46, #124b68 55%, #087e83);
+        border-radius: 14px;
+        padding: 22px 26px;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        box-shadow: 0 7px 22px rgba(16,44,70,.14);
+        margin-bottom: 20px;
+    }
+
+        .rd-header::before {
+            content: "";
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: 50%;
+            right: 90px;
+            top: -145px;
+        }
+
+        .rd-header::after {
+            content: "";
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            background: rgba(255,255,255,.045);
+            border-radius: 50%;
+            right: -35px;
+            bottom: -110px;
+        }
+
+    .rd-header-content,
+    .rd-profile {
+        position: relative;
+        z-index: 1;
+    }
+
+    .rd-eyebrow {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #8de3df;
+        margin-bottom: 5px;
+    }
+
+    .rd-header h1 {
+        font-size: 29px;
+        font-weight: 800;
+        margin: 0;
+    }
+
+    .rd-header p {
+        color: #d1e5ec;
+        font-size: 12px;
+        margin: 5px 0 0;
+    }
+
+    .rd-profile {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 9px 14px;
+        background: rgba(255,255,255,.11);
+        border: 1px solid rgba(255,255,255,.15);
+        border-radius: 10px;
+    }
+
+    .rd-avatar {
+        width: 39px;
+        height: 39px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #d7f4ee;
+        color: #087c7e;
+        font-size: 19px;
+        font-weight: 800;
+    }
+
+    .rd-profile small {
+        display: block;
+        font-size: 10px;
+        color: #b9d9df;
+    }
+
+    .rd-profile strong {
+        display: block;
+        font-size: 13px;
+        color: white;
+        margin-top: 2px;
+    }
+
+    /* =====================================
+       SECTION HEADING
+    ===================================== */
+
+    .rd-section-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 2px 14px;
+    }
+
+    .rd-heading-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .rd-heading-line {
+        width: 4px;
+        height: 34px;
+        background: #0b9b99;
+        border-radius: 5px;
+    }
+
+    .rd-section-heading h3 {
+        font-size: 20px;
+        font-weight: 800;
+        margin: 0;
+        color: #193650;
+    }
+
+    .rd-section-heading p {
+        font-size: 11px;
+        color: #8997a5;
+        margin: 3px 0 0;
+    }
+
+    .rd-category-count {
+        background: #e5f4f2;
+        color: #087e7d;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 7px 13px;
+        border-radius: 7px;
+    }
+
+    /* =====================================
+       CATEGORY GRID
+    ===================================== */
+
+    .rd-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 15px;
+    }
+
+    .rd-card {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        min-height: 126px;
+        padding: 18px;
+        background: #fff;
+        border: 1px solid #e8edf2;
+        border-radius: 13px;
+        overflow: hidden;
+        transition: all .28s ease;
+        box-shadow: 0 3px 12px rgba(27,52,76,.045);
+    }
+
+        .rd-card::after {
+            content: "";
+            position: absolute;
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            right: -30px;
+            bottom: -38px;
+            background: var(--soft);
+            opacity: .65;
+            transition: .3s;
+        }
+
+        .rd-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 12px 25px rgba(27,52,76,.11);
+        }
+
+            .rd-card:hover::after {
+                transform: scale(1.7);
+            }
+
+    .rd-icon {
+        position: relative;
+        z-index: 1;
+        width: 55px;
+        height: 55px;
+        min-width: 55px;
+        border-radius: 14px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: var(--soft);
+        color: var(--accent);
+        font-size: 26px;
+        transition: .3s;
+    }
+
+    .rd-card:hover .rd-icon {
+        transform: rotate(-7deg) scale(1.07);
+    }
+
+    .rd-card-content {
+        flex: 1;
+        min-width: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+        .rd-card-content h4 {
+            color: #253c53;
+            font-size: 16px;
+            font-weight: 750;
+            margin: 0 0 5px;
+        }
+
+        .rd-card-content p {
+            color: #8996a4;
+            font-size: 11px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+    .rd-card-arrow {
+        position: relative;
+        z-index: 1;
+        width: 29px;
+        height: 29px;
+        min-width: 29px;
+        border-radius: 50%;
+        background: #f2f5f8;
+        color: #8796a5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 19px;
+        transition: .25s;
+    }
+
+    .rd-card:hover .rd-card-arrow {
+        background: var(--accent);
+        color: #fff;
+        transform: translateX(3px);
+    }
+
+    /* =====================================
+       CATEGORY COLORS
+    ===================================== */
+
+    .rd-production {
+        --accent: #2876ce;
+        --soft: #e7f1ff;
+    }
+
+    .rd-quality {
+        --accent: #159b70;
+        --soft: #e5f7ee;
+    }
+
+    .rd-yarn {
+        --accent: #07979c;
+        --soft: #e3f5f5;
+    }
+
+    .rd-fabric {
+        --accent: #d18a2c;
+        --soft: #fff3e2;
+    }
+
+    .rd-dyeing {
+        --accent: #d65c83;
+        --soft: #fcebf1;
+    }
+
+    .rd-cost {
+        --accent: #7563c9;
+        --soft: #efedff;
+    }
+
+    /* =====================================
+       TEXTILE OVERVIEW
+    ===================================== */
+
+    .rd-overview {
+        margin-top: 22px;
+    }
+
+    .rd-subheading {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 12px;
+    }
+
+        .rd-subheading h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 750;
+            color: #193650;
+        }
+
+        .rd-subheading p {
+            margin: 3px 0 0;
+            color: #8b98a5;
+            font-size: 11px;
+        }
+
+    .rd-overview-grid {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 11px;
+    }
+
+    .rd-stat {
+        background: #fff;
+        border: 1px solid #e8edf2;
+        border-radius: 10px;
+        padding: 13px;
+        box-shadow: 0 3px 10px rgba(27,52,76,.035);
+    }
+
+    .rd-stat-label {
+        font-size: 11px;
+        color: #8392a1;
+        font-weight: 600;
+    }
+
+    .rd-stat-value {
+        font-size: 19px;
+        font-weight: 800;
+        color: #233e56;
+        margin: 7px 0 3px;
+    }
+
+    .rd-stat-note {
+        font-size: 10px;
+        color: #8997a4;
+    }
+
+    .rd-stat-icon {
+        font-size: 19px;
+        margin-bottom: 5px;
+    }
+
+    /* =====================================
+       LOWER PANELS
+    ===================================== */
+
+    .rd-lower-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .rd-lower-panel {
+        background: #fff;
+        border: 1px solid #e8edf2;
+        border-radius: 11px;
+        padding: 17px;
+    }
+
+    .rd-lower-title {
+        font-size: 16px;
+        font-weight: 750;
+        color: #193650;
+        margin-bottom: 12px;
+    }
+
+    .rd-shortcut-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 9px;
+    }
+
+    .rd-shortcut {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 10px;
+        background: #f6f8fb;
+        border-radius: 8px;
+        color: #344c62;
+        font-size: 11px;
+        font-weight: 600;
+        transition: .2s;
+    }
+
+        .rd-shortcut:hover {
+            background: #e6f4f3;
+            color: #078b8c;
+        }
+
+    .rd-shortcut-icon {
+        font-size: 17px;
+    }
+
+    /* =====================================
+       TEXTILE WORKFLOW
+    ===================================== */
+
+    .rd-workflow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 5px;
+        padding: 12px 5px;
+    }
+
+    .rd-flow-item {
+        text-align: center;
+        flex: 1;
+    }
+
+    .rd-flow-icon {
+        width: 37px;
+        height: 37px;
+        margin: auto auto 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e8f4f4;
+        border-radius: 50%;
+        font-size: 17px;
+    }
+
+    .rd-flow-item strong {
+        display: block;
+        font-size: 10px;
+        color: #42596c;
+    }
+
+    .rd-flow-arrow {
+        color: #9aabb8;
+        font-size: 16px;
+    }
+
+    /* =====================================
+       FOOTER
+    ===================================== */
+
+    .rd-bottom {
+        margin-top: 19px;
+        padding: 12px 16px;
+        border: 1px solid #e6edf2;
+        border-radius: 9px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        color: #8b98a5;
+        font-size: 11px;
+    }
+
+        .rd-bottom strong {
+            color: #078b8c;
+        }
+
+    /* =====================================
+       LARGE DESKTOP
+    ===================================== */
+
+    @@media (min-width: 1600px) {
+        .report-dashboard {
+            padding: 12px 18px 28px;
+        }
+
+        .rd-header {
+            padding: 25px 32px;
+        }
+
+        .rd-card {
+            min-height: 140px;
+            padding: 21px;
+        }
+
+        .rd-icon {
+            width: 60px;
+            height: 60px;
+            min-width: 60px;
+            font-size: 29px;
+        }
+    }
+
+    /* =====================================
+       TABLET
+    ===================================== */
+
+    @@media (max-width: 991px) {
+        .rd-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .rd-card {
+            min-height: 115px;
+        }
+
+        .rd-overview-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    /* =====================================
+       MOBILE
+    ===================================== */
+
+    @@media (max-width: 767px) {
+
+        .report-dashboard {
+            padding: 7px 8px 18px;
+        }
+
+        .rd-header {
+            padding: 16px;
+            margin-bottom: 16px;
+            border-radius: 11px;
+        }
+
+            .rd-header h1 {
+                font-size: 23px;
+            }
+
+        .rd-eyebrow {
+            font-size: 8px;
+            letter-spacing: 1px;
+        }
+
+        .rd-header p {
+            font-size: 10px;
+        }
+
+        .rd-profile {
+            padding: 7px;
+            gap: 7px;
+        }
+
+        .rd-avatar {
+            width: 32px;
+            height: 32px;
+            font-size: 15px;
+        }
+
+        .rd-profile small {
+            font-size: 8px;
+        }
+
+        .rd-profile strong {
+            font-size: 10px;
+        }
+
+        .rd-section-heading h3 {
+            font-size: 18px;
+        }
+
+        .rd-section-heading p {
+            font-size: 10px;
+        }
+
+        .rd-grid {
+            gap: 10px;
+        }
+
+        .rd-card {
+            min-height: 100px;
+            padding: 11px;
+            gap: 9px;
+            border-radius: 10px;
+        }
+
+        .rd-icon {
+            width: 39px;
+            height: 39px;
+            min-width: 39px;
+            border-radius: 10px;
+            font-size: 19px;
+        }
+
+        .rd-card-content h4 {
+            font-size: 12px;
+        }
+
+        .rd-card-content p {
+            font-size: 9px;
+        }
+
+        .rd-card-arrow {
+            width: 23px;
+            height: 23px;
+            min-width: 23px;
+            font-size: 15px;
+        }
+
+        .rd-overview-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .rd-lower-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .rd-lower-panel {
+            padding: 13px;
+        }
+
+        .rd-shortcut-list {
+            gap: 7px;
+        }
+
+        .rd-stat-value {
+            font-size: 17px;
+        }
+
+        .rd-workflow {
+            gap: 2px;
+        }
+
+        .rd-flow-item strong {
+            font-size: 8px;
+        }
+
+        .rd-flow-icon {
+            width: 31px;
+            height: 31px;
+            font-size: 14px;
+        }
+
+        .rd-flow-arrow {
+            font-size: 11px;
+        }
+
+        .rd-bottom {
+            font-size: 9px;
+            padding: 10px;
+        }
+    }
+
+    /* =====================================
+       SMALL MOBILE
+    ===================================== */
+
+    @@media (max-width: 380px) {
+
+        .rd-header {
+            padding: 12px;
+        }
+
+            .rd-header h1 {
+                font-size: 19px;
+            }
+
+        .rd-profile {
+            gap: 5px;
+        }
+
+        .rd-avatar {
+            width: 28px;
+            height: 28px;
+        }
+
+        .rd-card {
+            gap: 7px;
+            padding: 8px;
+        }
+
+        .rd-card-content h4 {
+            font-size: 11px;
+        }
+
+        .rd-card-content p {
+            font-size: 8px;
+        }
+
+        .rd-section-heading h3 {
+            font-size: 16px;
+        }
+    }
+
+    /* =====================================
+       TOUCH DEVICES
+    ===================================== */
+
+    @@media (hover: none) {
+        .rd-card:hover {
+            transform: none;
+        }
+    }
+
+</style>
+
+<!-- =====================================
+     MAIN DASHBOARD
+===================================== -->
+
+<div class="report-dashboard">
+
+    <!-- HEADER -->
+
+    <div class="rd-header">
+
+        <div class="rd-header-content">
+
+            @* <div class="rd-eyebrow">
+                TEXTILE MANAGEMENT SYSTEM
+            </div> *@
+
+            <h1>Report Hub</h1>
+
+            <h6>
+                Your Centralized Textile Reporting Portal
+            </h6>
+
+        </div>
+
+        <div class="rd-profile">
+
+            <div class="rd-avatar">👤</div>
+
+            <div>
+                <small>@greeting</small>
+                <strong>@userName</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- REPORT CATEGORIES -->
+
+    <div class="rd-section-heading">
+
+        <div class="rd-heading-left">
+
+            <div class="rd-heading-line"></div>
+
+            <div>
+                <h3>Explore Departments</h3>
+                <p>Select a department to access its reports</p>
+            </div>
+
+        </div>
+
+        <div class="rd-category-count">
+            06 CATEGORIES
+        </div>
+
+    </div>
+
+
+    <!-- CATEGORY CARDS -->
+
+    <div class="rd-grid">
+
+        <a href="#" class="rd-card rd-production">
+
+            <div class="rd-icon">🏭</div>
+
+            <div class="rd-card-content">
+                <h4>Production</h4>
+                <p>Manufacturing & production reports</p>
+            </div>
+
+            <div class="rd-card-arrow">›</div>
+
+        </a>
+
+
+        <a href="#" class="rd-card rd-quality">
+
+            <div class="rd-icon">🔍</div>
+
+            <div class="rd-card-content">
+                <h4>Quality Control</h4>
+                <p>Quality inspection & performance</p>
+            </div>
+
+            <div class="rd-card-arrow">›</div>
+
+        </a>
+
+
+        <a href="#" class="rd-card rd-yarn">
+
+            <div class="rd-icon">🧶</div>
+
+            <div class="rd-card-content">
+                <h4>Yarn</h4>
+                <p>Yarn consumption & stock reports</p>
+            </div>
+
+            <div class="rd-card-arrow">›</div>
+
+        </a>
+
+
+        <a href="#" class="rd-card rd-fabric">
+
+            <div class="rd-icon">🧵</div>
+
+            <div class="rd-card-content">
+                <h4>Fabric</h4>
+                <p>Fabric production & inspection</p>
+            </div>
+
+            <div class="rd-card-arrow">›</div>
+
+        </a>
+
+
+        <a href="#" class="rd-card rd-dyeing">
+
+            <div class="rd-icon">🎨</div>
+
+            <div class="rd-card-content">
+                <h4>Dyeing & Finishing</h4>
+                <p>Dyeing and finishing operations</p>
+            </div>
+
+            <div class="rd-card-arrow">›</div>
+
+        </a>
+
+
+        <a href="#" class="rd-card rd-cost">
+
+            <div class="rd-icon">💰</div>
+
+            <div class="rd-card-content">
+                <h4>Cost & Finance</h4>
+                <p>Operational cost & financial reports</p>
+            </div>
+
+            <div class="rd-card-arrow">›</div>
+
+        </a>
+
+    </div>
+
+
+    <!-- TEXTILE OPERATIONS OVERVIEW -->
+
+    <div class="rd-overview">
+
+        <div class="rd-subheading">
+
+            <div class="rd-heading-line"></div>
+
+            <div>
+                <h3>Textile Operations Overview</h3>
+                <p>Key areas of textile manufacturing</p>
+            </div>
+
+        </div>
+
+
+        <div class="rd-overview-grid">
+
+            <div class="rd-stat">
+                <div class="rd-stat-icon">🏭</div>
+                <div class="rd-stat-label">Production</div>
+                <div class="rd-stat-value">Daily</div>
+                <div class="rd-stat-note">Production Reports</div>
+            </div>
+
+
+            <div class="rd-stat">
+                <div class="rd-stat-icon">🔍</div>
+                <div class="rd-stat-label">Quality</div>
+                <div class="rd-stat-value">QC</div>
+                <div class="rd-stat-note">Inspection Reports</div>
+            </div>
+
+
+            <div class="rd-stat">
+                <div class="rd-stat-icon">🧶</div>
+                <div class="rd-stat-label">Yarn</div>
+                <div class="rd-stat-value">Stock</div>
+                <div class="rd-stat-note">Consumption Reports</div>
+            </div>
+
+
+            <div class="rd-stat">
+                <div class="rd-stat-icon">🧵</div>
+                <div class="rd-stat-label">Fabric</div>
+                <div class="rd-stat-value">Output</div>
+                <div class="rd-stat-note">Fabric Reports</div>
+            </div>
+
+
+            <div class="rd-stat">
+                <div class="rd-stat-icon">🎨</div>
+                <div class="rd-stat-label">Dyeing</div>
+                <div class="rd-stat-value">Batch</div>
+                <div class="rd-stat-note">Processing Reports</div>
+            </div>
+
+
+            <div class="rd-stat">
+                <div class="rd-stat-icon">💰</div>
+                <div class="rd-stat-label">Cost</div>
+                <div class="rd-stat-value">Costing</div>
+                <div class="rd-stat-note">Financial Reports</div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- LOWER DASHBOARD -->
+
+    <div class="rd-lower-grid">
+
+
+        <!-- IMPORTANT REPORT SHORTCUTS -->
+
+        <div class="rd-lower-panel">
+
+            <div class="rd-lower-title">
+                📊 Important Report Shortcuts
+            </div>
+
+            <div class="rd-shortcut-list">
+
+                <a href="#" class="rd-shortcut">
+                    <span class="rd-shortcut-icon">📅</span>
+                    Daily Production
+                </a>
+
+                <a href="#" class="rd-shortcut">
+                    <span class="rd-shortcut-icon">🔍</span>
+                    Quality Inspection
+                </a>
+
+                <a href="#" class="rd-shortcut">
+                    <span class="rd-shortcut-icon">🧶</span>
+                    Yarn Consumption
+                </a>
+
+                <a href="#" class="rd-shortcut">
+                    <span class="rd-shortcut-icon">🧵</span>
+                    Fabric Stock
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- TEXTILE MANUFACTURING FLOW -->
+
+        <div class="rd-lower-panel">
+
+            <div class="rd-lower-title">
+                🏗 Textile Manufacturing Flow
+            </div>
+
+            <div class="rd-workflow">
+
+                <div class="rd-flow-item">
+                    <div class="rd-flow-icon">🧶</div>
+                    <strong>Yarn</strong>
+                </div>
+
+                <span class="rd-flow-arrow">→</span>
+
+                <div class="rd-flow-item">
+                    <div class="rd-flow-icon">🧵</div>
+                    <strong>Fabric</strong>
+                </div>
+
+                <span class="rd-flow-arrow">→</span>
+
+                <div class="rd-flow-item">
+                    <div class="rd-flow-icon">🎨</div>
+                    <strong>Dyeing</strong>
+                </div>
+
+                <span class="rd-flow-arrow">→</span>
+
+                <div class="rd-flow-item">
+                    <div class="rd-flow-icon">🔍</div>
+                    <strong>Quality</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <div class="rd-bottom">
+
+        <span>
+            © @DateTime.Now.Year
+            <strong>Report Hub</strong>
+        </span>
+
+        <span>
+            Textile Reporting Portal
+        </span>
+
+    </div>
+
+</div>

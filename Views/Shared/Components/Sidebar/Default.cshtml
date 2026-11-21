@@ -1,0 +1,332 @@
+﻿@model List<ReportHub_V2.ViewModels.SidebarViewModel>
+
+@{
+    var groupedModules = Model
+        .GroupBy(x => x.ModuleName)
+        .ToList();
+}
+
+<style>
+
+    /* =========================================
+       SIDEBAR MAIN
+    ========================================= */
+
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: linear-gradient( 180deg, #102c46 0%, #124b68 55%, #087e83 100% );
+        overflow-x: hidden;
+        overflow-y: auto;
+        box-shadow: 4px 0 18px rgba(16,44,70,.15);
+        z-index: 1000;
+    }
+
+    /* =========================================
+       BRAND
+    ========================================= */
+
+    .brand {
+        text-align: center;
+        padding: 18px 10px 15px;
+        color: white;
+        border-bottom: 1px solid rgba(255,255,255,.15);
+    }
+
+        .brand img {
+            width: 160px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+    .brand-title {
+        margin-top: 7px;
+        font-weight: 700;
+        font-size: 15px;
+        letter-spacing: 1.5px;
+        color: #8de3df;
+    }
+
+    /* =========================================
+       MODULE TITLE
+    ========================================= */
+
+    .module-title {
+        color: #8de3df;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 17px 15px 7px;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+    }
+
+    /* =========================================
+       MODULE BUTTON
+    ========================================= */
+
+    .module-button {
+        width: calc(100% - 20px);
+        margin: 3px 10px;
+        padding: 11px 13px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: none;
+        border-radius: 7px;
+        background: transparent;
+        color: #ffffff;
+        font-size: 13px;
+        text-align: left;
+        cursor: pointer;
+        transition: .25s;
+    }
+
+        .module-button:hover,
+        .module-button.active {
+            background: rgba(255,255,255,.14);
+            color: #ffffff;
+        }
+
+    .module-left {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        min-width: 0;
+    }
+
+    .module-icon {
+        color: #8de3df;
+        font-size: 17px;
+        min-width: 20px;
+    }
+
+    .module-arrow {
+        font-size: 12px;
+        transition: transform .25s;
+    }
+
+    .module-button.active .module-arrow {
+        transform: rotate(180deg);
+    }
+
+    /* =========================================
+       SUBMENU
+    ========================================= */
+
+    .submenu {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height .3s ease;
+        background: rgba(0,0,0,.16);
+        margin: 0 10px;
+        border-radius: 7px;
+    }
+
+        .submenu.show {
+            max-height: 1000px;
+        }
+
+        /* SUBMENU WHITE TEXT */
+
+        .submenu a {
+            display: flex;
+            align-items: center;
+            padding: 11px 12px 11px 43px;
+            color: #ffffff !important;
+            font-size: 12px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: .2s;
+            border-left: 3px solid transparent;
+        }
+
+            .submenu a span {
+                color: #ffffff !important;
+            }
+
+            .submenu a i {
+                color: #8de3df !important;
+                margin-right: 9px;
+                font-size: 10px;
+            }
+
+            .submenu a:hover {
+                background: rgba(141,227,223,.18);
+                color: #ffffff !important;
+                border-left-color: #8de3df;
+                padding-left: 48px;
+            }
+
+    /* =========================================
+       SCROLLBAR
+    ========================================= */
+
+    .sidebar::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,.25);
+        border-radius: 10px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    /* =========================================
+       MOBILE RESPONSIVE
+    ========================================= */
+
+    @@media (max-width: 767px) {
+
+        .sidebar {
+            width: 250px;
+        }
+
+        .brand img {
+            max-width: 145px;
+        }
+
+        .module-button {
+            padding: 12px;
+        }
+
+        .submenu a {
+            padding-top: 12px;
+            padding-bottom: 12px;
+        }
+    }
+
+</style>
+
+
+<!-- =========================================
+     SIDEBAR HTML
+========================================= -->
+
+<div class="sidebar" id="reportSidebar">
+
+    <!-- BRAND -->
+
+    <div class="brand">
+
+        <img src="@Url.Content("~/images/cotton_logo.png")"
+             alt="Cotton Club Logo" />
+
+        <div class="brand-title">
+            REPORT HUB
+        </div>
+
+    </div>
+
+
+    <!-- MODULES -->
+    @for (int i = 0; i < groupedModules.Count; i++)
+    {
+        var module = groupedModules[i];
+
+        var moduleId = "module_" + i;
+
+        <button type="button"
+                class="module-button"
+                data-target="@moduleId">
+
+            <span class="module-left">
+
+                <i class="bi @(module.Key.ToLower().Contains("report") ? "bi-file-earmark-bar-graph" : 
+                                module.Key.ToLower().Contains("setting") ? "bi-gear-fill" : "bi-folder2-open") module-icon"></i>
+
+                <span>
+                    @module.Key
+                </span>
+
+            </span>
+
+            <i class="bi bi-chevron-down module-arrow"></i>
+
+        </button>
+
+
+        <!-- SUBMENU -->
+
+        <div class="submenu" id="@moduleId">
+
+            @foreach (var menu in module)
+            {
+                <a href="@Url.Content(menu.Url)"
+                   data-menu-id="@menu.MenuId">
+
+                    <i class="bi bi-circle-fill"></i>
+
+                    <span>
+                        @menu.MenuName
+                    </span>
+
+                </a>
+            }
+
+        </div>
+    }
+
+</div>
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================= -->
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const moduleButtons = document.querySelectorAll(".module-button");
+
+
+        // MODULE EXPAND / COLLAPSE
+
+        moduleButtons.forEach(function (button) {
+
+            button.addEventListener("click", function () {
+
+                const targetId = button.getAttribute("data-target");
+
+                const targetMenu = document.getElementById(targetId);
+
+                const isAlreadyOpen = targetMenu.classList.contains("show");
+
+
+                // CLOSE ALL OTHER SUBMENUS
+
+                document.querySelectorAll(".submenu").forEach(function (menu) {
+                    menu.classList.remove("show");
+                });
+
+
+                // REMOVE ACTIVE STATE
+
+                moduleButtons.forEach(function (btn) {
+                    btn.classList.remove("active");
+                });
+
+
+                // OPEN SELECTED SUBMENU
+
+                if (!isAlreadyOpen) {
+
+                    targetMenu.classList.add("show");
+
+                    button.classList.add("active");
+
+                }
+
+            });
+
+        });
+
+    });
+
+</script>
