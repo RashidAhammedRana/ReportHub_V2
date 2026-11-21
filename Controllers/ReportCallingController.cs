@@ -76,16 +76,12 @@ public class ReportCallingController : Controller
         try
         {
             var rptPath = $"ReportHub_V2.Reports.{reportName}";
-
             var reportType = Type.GetType(rptPath);
-
             if (reportType == null)
             {
                 return NotFound($"Report '{reportName}' not found.");
             }
-
             var report = (XtraReport)Activator.CreateInstance(reportType);
-
             return View(report);
         }
         catch (Exception ex)
