@@ -114,4 +114,104 @@ public class ReportCallingController : Controller
             return Content(ex.InnerException?.Message ?? ex.Message);
         }
     }
+
+    [HttpGet]
+    public async Task<IActionResult> DyeingProductionWcReport(int menuId, string reportName = "rptDyeing_Production_WC")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> DyeingCostDetailsReport(int menuId, string reportName = "rptDyeingCost")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> DyeingFinishingBillReport(int menuId, string reportName = "rptDyeingBill")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> DyeingVsShortNoteReport(int menuId, string reportName = "rpt_Dyeing_vs_ShortNote")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
 }
