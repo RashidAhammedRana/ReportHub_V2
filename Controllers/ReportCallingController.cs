@@ -214,4 +214,79 @@ public class ReportCallingController : Controller
             return Content(ex.InnerException?.Message ?? ex.Message);
         }
     }
+
+    [HttpGet]
+    public async Task<IActionResult> FinishFabricReport(int menuId, string reportName = "rptFinishFabStock")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> BatchFollowUpReport(int menuId, string reportName = "rptBatchFollowUp")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ShortNoteAnalysisReport(int menuId, string reportName = "rptShortNote_Tools")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
 }
