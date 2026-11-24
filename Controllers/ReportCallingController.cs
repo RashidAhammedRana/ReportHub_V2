@@ -489,4 +489,179 @@ public class ReportCallingController : Controller
             return Content(ex.InnerException?.Message ?? ex.Message);
         }
     }
+
+    [HttpGet]
+    public async Task<IActionResult> DailyShipmentStatusReport(int menuId, string reportName = "rptShipment")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> LotWiseYarnAgingReport(int menuId, string reportName = "rptYarnAging")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> SewingInputOutputReport(int menuId, string reportName = "rptSewingWIP")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> DailySewingInputOutputPieceRateReport(int menuId, string reportName = "rptDailySewingProduction")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> LineWiseSewingInputOutputReport(int menuId, string reportName = "rptLineWiseWIP")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> SewingDhuReport(int menuId, string reportName = "rptFinalDHU")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GatePassOutReport(int menuId, string reportName = "rptGatePass_Out")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
 }
