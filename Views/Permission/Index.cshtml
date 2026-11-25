@@ -1,5 +1,11 @@
 ﻿@model List<ReportHub_V2.ViewModels.PermissionPageVm>
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        toastr.success('@TempData["SuccessMessage"]', 'Success');
+    </script>
+}
 <div class="container mt-4">
 
     <!-- HEADER -->
@@ -142,9 +148,7 @@
         <!-- TABLE -->
         @if (Model != null && Model.Count > 0)
         {
-            <form asp-action="SaveData"
-                  asp-controller="Permission"
-                  method="post">
+            <form asp-action="SaveData" asp-controller="Permission" method="post" data-no-loader>
 
                 <input type="hidden" name="userId" value="@ViewBag.SelectedUserId" />
 
@@ -234,6 +238,8 @@
     } *@
 
     </div>
+
+</div>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

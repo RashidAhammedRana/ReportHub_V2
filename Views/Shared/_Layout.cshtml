@@ -198,9 +198,15 @@
             });
 
             // FORM SUBMIT
+
             $(document).on("submit", "form", function () {
 
                 if (this.target === "_blank") {
+                    return;
+                }
+
+                // Skip loader for selected forms
+                if ($(this).is("[data-no-loader]")) {
                     return;
                 }
 

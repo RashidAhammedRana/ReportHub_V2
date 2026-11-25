@@ -119,7 +119,7 @@ namespace UtilityManagement.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["msg"] = "Permissions Saved";
+            TempData["SuccessMessage"] = "Permissions saved successfully!";
 
             return RedirectToAction("Index", new { userId });
         }
