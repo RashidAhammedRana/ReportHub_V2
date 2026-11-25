@@ -689,4 +689,304 @@ public class ReportCallingController : Controller
             return Content(ex.InnerException?.Message ?? ex.Message);
         }
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GarmentsIssueFromPrintReport(int menuId, string reportName = "rptPrintReceiveChallan")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> OrderWiseClosingReport(int menuId, string reportName = "rpt_Order_Wise_Closing")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> DailyYarnReceiveStatusReport(int menuId, string reportName = "rptDailyYarnReceive")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ProgramClosingReport(int menuId, string reportName = "rptProgram_Closing")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> TopTenGeneralItemIssueReport(int menuId, string reportName = "rpt_Top_Ten_General_Item_Issue")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GeneralItemIssueDetailsReport(int menuId, string reportName = "rptGeneral_Item_Issue")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> DNCPerformanceAnalysisReport(int menuId, string reportName = "rptDNC_Performance")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> CostAnalysisReport(int menuId, string reportName = "rptJobWiseCostAnalysis")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> DateWiseCostAnalysisSummaryReport(int menuId, string reportName = "rptDateWiseCostAnalysis")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> DateWiseKnittingProductionReport(int menuId, string reportName = "rptDateWiseKnittingProduction")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> DateWiseYarnTransactionReport(int menuId, string reportName = "rptDateWiseYarnTransaction")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> CutToShipReport(int menuId, string reportName = "rptCut_To_Ship")
+    {
+        if (!await HasViewPermission(menuId))
+        {
+            return Forbid();
+        }
+
+        try
+        {
+            var rptPath = $"ReportHub_V2.Reports.{reportName}";
+            var reportType = Type.GetType(rptPath);
+            if (reportType == null)
+            {
+                return NotFound($"Report '{reportName}' not found.");
+            }
+            var report = (XtraReport)Activator.CreateInstance(reportType);
+            return View(report);
+        }
+        catch (Exception ex)
+        {
+            return Content(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
 }
