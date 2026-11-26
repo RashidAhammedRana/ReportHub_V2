@@ -2,9 +2,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>@ViewBag.Title</title>
 
+    <!-- =====================================
+         CSS LIBRARIES
+    ====================================== -->
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
           rel="stylesheet" />
@@ -13,17 +18,26 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
           rel="stylesheet" />
 
-    <!-- DevExpress Theme CSS -->
+    <!-- DevExpress Theme -->
     <link href="https://cdn3.devexpress.com/jslib/23.2.6/css/dx.light.css"
           rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+    <!-- Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+          rel="stylesheet" />
 
     <!-- DevExpress Viewer CSS -->
     <link href="~/css/viewer.part.bundle.css"
           rel="stylesheet"
           asp-append-version="true" />
 
+
+    <!-- =====================================
+         CUSTOM STYLES
+    ====================================== -->
+
     <style>
+
         * {
             box-sizing: border-box;
         }
@@ -40,7 +54,11 @@
             overflow-x: hidden;
         }
 
-        /* SIDEBAR */
+
+        /* =====================================
+                   SIDEBAR
+                ====================================== */
+
         .sidebar-wrapper {
             width: 250px;
             height: 100vh;
@@ -49,37 +67,77 @@
             left: 0;
             overflow-y: auto;
             z-index: 1000;
+            transition: transform .3s ease;
         }
 
-        /* MAIN CONTENT */
+        /* Hide Sidebar */
+
+        body.sidebar-hidden .sidebar-wrapper {
+            transform: translateX(-100%);
+        }
+
+
+        /* =====================================
+                   MAIN CONTENT
+                ====================================== */
+
         .main-content {
             margin-left: 250px;
             padding: 20px;
             min-height: 100vh;
+            transition: margin-left .3s ease;
         }
 
-        /* RESPONSIVE */
-        @@media(max-width: 768px) {
-            .sidebar-wrapper {
-                position: relative;
-                width: 100%;
-                height: auto;
-            }
-
-            .main-content {
-                margin-left: 0;
-                padding: 12px;
-            }
+        body.sidebar-hidden .main-content {
+            margin-left: 0;
         }
 
-        /* GLOBAL LOADING OVERLAY */
+
+        /* =====================================
+                   SIDEBAR TOGGLE BUTTON
+                ====================================== */
+
+        .sidebar-toggle {
+            position: fixed;
+            top: 19px;
+            left: 8px;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #102c46;
+            color: #ffffff;
+            border: 1px solid rgba(255,255,255,.2);
+            border-radius: 6px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 2000;
+            transition: background .2s ease;
+        }
+
+            .sidebar-toggle:hover {
+                background: #087e83;
+                color: #ffffff;
+            }
+
+            .sidebar-toggle:focus-visible {
+                outline: 3px solid #8de3df;
+                outline-offset: 2px;
+            }
+
+
+        /* =====================================
+                   GLOBAL LOADING OVERLAY
+                ====================================== */
+
         #globalLoader {
             display: none;
             position: fixed;
             inset: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.65);
+            background: rgba(255,255,255,.65);
             z-index: 999999;
             align-items: center;
             justify-content: center;
@@ -93,7 +151,7 @@
             border: 5px solid #ddd;
             border-top: 5px solid #0d6efd;
             border-radius: 50%;
-            animation: loaderSpin 0.8s linear infinite;
+            animation: loaderSpin .8s linear infinite;
         }
 
         .loader-text {
@@ -103,6 +161,7 @@
         }
 
         @@keyframes loaderSpin {
+
             0% {
                 transform: rotate(0deg);
             }
@@ -111,120 +170,303 @@
                 transform: rotate(360deg);
             }
         }
+
+
+        /* =====================================
+                   RESPONSIVE
+                ====================================== */
+
+        @@media(max-width: 768px) {
+
+            .sidebar-wrapper {
+                width: 250px;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 12px;
+            }
+        }
+
+
+        /* =====================================
+                   REDUCE MOTION
+                ====================================== */
+
+        @@media(prefers-reduced-motion: reduce) {
+
+            .sidebar-wrapper,
+            .main-content,
+            .sidebar-toggle {
+                transition: none;
+            }
+
+            .loader-spinner {
+                animation-duration: 2s;
+            }
+        }
+
     </style>
 
-    <!-- JQUERY -->
+
+    <!-- =====================================
+         JAVASCRIPT LIBRARIES
+    ====================================== -->
+    <!-- JQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <!-- DEVEXPRESS THIRD PARTY -->
+    <!-- DevExpress Third Party -->
     <script src="~/js/thirdparty.bundle.js"
             asp-append-version="true"></script>
 
 </head>
 
+
 <body>
 
-    <!-- GLOBAL LOADING OVERLAY -->
+
+    <!-- =====================================
+         GLOBAL LOADER
+    ====================================== -->
+
     <div id="globalLoader">
+
         <div class="loader-spinner"></div>
-        <div class="loader-text">Generating Report... Please Wait</div>
+
+        <div class="loader-text">
+            Generating Report... Please Wait
+        </div>
+
     </div>
 
-    <!-- SIDEBAR -->
+
+    <!-- =====================================
+         SIDEBAR TOGGLE BUTTON
+         ALWAYS VISIBLE
+    ====================================== -->
+
+    <button type="button"
+            id="sidebarToggle"
+            class="sidebar-toggle"
+            title="Hide Sidebar"
+            aria-label="Hide Sidebar"
+            aria-expanded="true">
+
+        <i class="bi bi-list"></i>
+
+    </button>
+
+
+    <!-- =====================================
+         SIDEBAR COMPONENT
+    ====================================== -->
+
     <div class="sidebar-wrapper">
+
         @await Component.InvokeAsync("Sidebar")
+
     </div>
 
-    <!-- MAIN CONTENT -->
+
+    <!-- =====================================
+         MAIN CONTENT
+    ====================================== -->
+
     <div class="main-content">
+
         @RenderBody()
+
     </div>
 
-    <!-- BOOTSTRAP JS -->
+
+    <!-- =====================================
+         BOOTSTRAP JS
+    ====================================== -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- DEVEXPRESS VIEWER JS -->
+
+    <!-- =====================================
+         DEVEXPRESS VIEWER JS
+    ====================================== -->
+
     <script src="~/js/viewer.part.bundle.js"
             asp-append-version="true"></script>
 
-    <!-- GLOBAL LOADING SCRIPT -->
+
+    <!-- =====================================
+         GLOBAL JAVASCRIPT
+    ====================================== -->
+
     <script>
+
         $(function () {
 
-            let navigationStarted = false;
 
-            // AJAX START
+            // =====================================
+            // SIDEBAR TOGGLE
+            // =====================================
+
+            const toggleBtn = document.getElementById("sidebarToggle");
+
+            if (toggleBtn) {
+
+                const toggleIcon = toggleBtn.querySelector("i");
+
+                toggleBtn.addEventListener("click", function () {
+
+                    document.body.classList.toggle("sidebar-hidden");
+
+                    const isHidden =
+                        document.body.classList.contains("sidebar-hidden");
+
+                    // Update Icon
+                    if (toggleIcon) {
+
+                        toggleIcon.className = isHidden
+                            ? "bi bi-layout-sidebar"
+                            : "bi bi-list";
+
+                    }
+
+                    // Update Tooltip
+                    toggleBtn.setAttribute(
+                        "title",
+                        isHidden ? "Show Sidebar" : "Hide Sidebar"
+                    );
+
+                    toggleBtn.setAttribute(
+                        "aria-label",
+                        isHidden ? "Show Sidebar" : "Hide Sidebar"
+                    );
+
+                    toggleBtn.setAttribute(
+                        "aria-expanded",
+                        (!isHidden).toString()
+                    );
+
+                });
+
+            }
+
+
+            // =====================================
+            // AJAX START LOADER
+            // =====================================
+
             $(document).ajaxStart(function () {
+
                 $("#globalLoader").css("display", "flex");
+
             });
 
+
+            // =====================================
             // AJAX COMPLETE
+            // =====================================
+
             $(document).ajaxStop(function () {
+
                 $("#globalLoader").hide();
+
             });
 
+
+            // =====================================
             // NORMAL PAGE NAVIGATION
+            // =====================================
+
             $(document).on("click", "a", function (e) {
 
-                if (e.ctrlKey || e.shiftKey ||
-                    e.metaKey || e.which === 2) {
+                // Ignore new tab / middle click
+                if (
+                    e.ctrlKey ||
+                    e.shiftKey ||
+                    e.metaKey ||
+                    e.which === 2
+                ) {
                     return;
                 }
 
+                // Ignore target blank
                 if ($(this).attr("target") === "_blank") {
                     return;
                 }
 
+                // Ignore download links
                 if ($(this).attr("download") !== undefined) {
                     return;
                 }
 
                 const href = $(this).attr("href");
 
-                if (!href || href === "#" ||
+                // Ignore invalid links
+                if (
+                    !href ||
+                    href === "#" ||
                     href.startsWith("javascript:") ||
                     href.startsWith("mailto:") ||
-                    href.startsWith("tel:")) {
+                    href.startsWith("tel:")
+                ) {
                     return;
                 }
 
+                // Ignore Bootstrap controls
                 if ($(this).attr("data-bs-toggle")) {
                     return;
                 }
 
-                navigationStarted = true;
-
+                // Show Loader
                 $("#globalLoader").css("display", "flex");
+
             });
 
-            // FORM SUBMIT
+
+            // =====================================
+            // FORM SUBMIT LOADER
+            // =====================================
 
             $(document).on("submit", "form", function () {
 
+                // Ignore new tab forms
                 if (this.target === "_blank") {
                     return;
                 }
 
-                // Skip loader for selected forms
+                // Ignore selected forms
                 if ($(this).is("[data-no-loader]")) {
                     return;
                 }
 
                 $("#globalLoader").css("display", "flex");
+
             });
 
-            // HIDE LOADER WHEN PAGE IS RESTORED FROM BFCACHE
+
+            // =====================================
+            // HIDE LOADER ON PAGE RESTORE
+            // =====================================
+
             window.addEventListener("pageshow", function () {
-                navigationStarted = false;
+
                 $("#globalLoader").hide();
+
             });
+
 
         });
+
     </script>
 
-    <!-- PAGE SCRIPTS -->
+
+    <!-- =====================================
+         PAGE SCRIPTS
+    ====================================== -->
     @await RenderSectionAsync("Scripts", required: false)
+
 
 </body>
 </html>
