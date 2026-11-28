@@ -4,7 +4,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 
-namespace ReportHub_V2.Reports
+namespace QCO.Reports
 {
     public partial class rptDyeingProduction : DevExpress.XtraReports.UI.XtraReport
     {

@@ -1,4 +1,4 @@
-﻿namespace ReportHub_V2.Reports
+﻿namespace QCO.Reports
 {
     partial class rptDyeingProduction
     {
@@ -179,7 +179,6 @@
             this.calculatedField3 = new DevExpress.XtraReports.UI.CalculatedField();
             this.calculatedField4 = new DevExpress.XtraReports.UI.CalculatedField();
             this.GroupHeader3 = new DevExpress.XtraReports.UI.GroupHeaderBand();
-            this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
             this.GroupFooter3 = new DevExpress.XtraReports.UI.GroupFooterBand();
             this.xrTable6 = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow6 = new DevExpress.XtraReports.UI.XRTableRow();
@@ -192,6 +191,7 @@
             this.xrTableCell84 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell85 = new DevExpress.XtraReports.UI.XRTableCell();
             this.xrTableCell86 = new DevExpress.XtraReports.UI.XRTableCell();
+            this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrRichText1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xrTable1)).BeginInit();
@@ -1460,21 +1460,6 @@
             this.GroupHeader3.Level = 2;
             this.GroupHeader3.Name = "GroupHeader3";
             // 
-            // xrLabel2
-            // 
-            this.xrLabel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(201)))), ((int)(((byte)(232)))), ((int)(((byte)(250)))));
-            this.xrLabel2.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
-            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[calculatedField2]")});
-            this.xrLabel2.Font = new DevExpress.Drawing.DXFont("cambria", 14F);
-            this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
-            this.xrLabel2.Multiline = true;
-            this.xrLabel2.Name = "xrLabel2";
-            this.xrLabel2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel2.SizeF = new System.Drawing.SizeF(146.3689F, 23F);
-            this.xrLabel2.StylePriority.UseBackColor = false;
-            this.xrLabel2.StylePriority.UseFont = false;
-            this.xrLabel2.Text = "xrLabel2";
-            // 
             // GroupFooter3
             // 
             this.GroupFooter3.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
@@ -1635,6 +1620,21 @@
             this.xrTableCell86.Text = "xrTableCell57";
             this.xrTableCell86.TextFormatString = "{0:N}";
             this.xrTableCell86.Weight = 0.61718297217929574D;
+            // 
+            // xrLabel2
+            // 
+            this.xrLabel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(201)))), ((int)(((byte)(232)))), ((int)(((byte)(250)))));
+            this.xrLabel2.ExpressionBindings.AddRange(new DevExpress.XtraReports.UI.ExpressionBinding[] {
+            new DevExpress.XtraReports.UI.ExpressionBinding("BeforePrint", "Text", "[calculatedField2]")});
+            this.xrLabel2.Font = new DevExpress.Drawing.DXFont("cambria", 14F);
+            this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 0F);
+            this.xrLabel2.Multiline = true;
+            this.xrLabel2.Name = "xrLabel2";
+            this.xrLabel2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
+            this.xrLabel2.SizeF = new System.Drawing.SizeF(146.3689F, 23F);
+            this.xrLabel2.StylePriority.UseBackColor = false;
+            this.xrLabel2.StylePriority.UseFont = false;
+            this.xrLabel2.Text = "xrLabel2";
             // 
             // rptDyeingProduction
             // 
